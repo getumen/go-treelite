@@ -72,7 +72,7 @@ func TestPredictor_PredictBatch(t *testing.T) {
 	}
 	defer dMatrix.Close()
 
-	expectedScores := make([][]float32, 0)
+	expectedScores := make([]float32, 0)
 
 	scoreFile, err := os.Open("test_data/score.csv")
 	if err != nil {
@@ -87,7 +87,7 @@ func TestPredictor_PredictBatch(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			expectedScores = append(expectedScores, []float32{float32(value)})
+			expectedScores = append(expectedScores, float32(value))
 		}
 	}
 
@@ -103,7 +103,5 @@ func TestPredictor_PredictBatch(t *testing.T) {
 		t.Fatal(err)
 	}
 	assert.Equal(t, len(expectedScores), len(actualScore))
-	for i := range expectedScores {
-		assert.InDelta(t, expectedScores[i][0], actualScore[i][0], 1e-7)
-	}
+	assert.InDeltaSlice(t, expectedScores, actualScore, 1e-7)
 }
