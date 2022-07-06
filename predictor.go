@@ -99,7 +99,7 @@ func (p Predictor) PredictBatch(
 	dmat *DMatrix,
 	verbose bool,
 	predMargin bool,
-) ([][]float32, error) {
+) ([]float32, error) {
 	var verboseInt, predMarginInt int32
 	if verbose {
 		verboseInt = 1
@@ -124,14 +124,5 @@ func (p Predictor) PredictBatch(
 		return nil, errPredictBatch
 	}
 
-	result := make([][]float32, dmat.row)
-	for rowID := range result {
-		scores := make([]float32, p.numClass)
-		for classID := range scores {
-			scores[classID] = output[p.numClass*rowID+classID]
-		}
-		result[rowID] = scores
-	}
-
-	return result, nil
+	return output, nil
 }
