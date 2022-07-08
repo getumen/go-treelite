@@ -16,6 +16,7 @@ var (
 	errFreeDMatrix         = errors.New("free dmatrix failed")
 )
 
+// DMatrix is treelite DMatrix
 type DMatrix struct {
 	pointer C.DMatrixHandle
 	row     int
@@ -23,6 +24,7 @@ type DMatrix struct {
 	element int
 }
 
+// CreaetFromMat creates a dense DMatrix from the given data
 func CreaetFromMat(
 	data []float32,
 	nrow, ncol int,
@@ -50,6 +52,7 @@ func CreaetFromMat(
 	}, nil
 }
 
+// CreateFromCSR creates a sparse DMatrix from the given data
 func CreateFromCSR(
 	header []uint64,
 	indices []uint32,
@@ -92,6 +95,7 @@ func CreateFromCSR(
 	}, nil
 }
 
+// Close frees internally allocated memory
 func (d *DMatrix) Close() error {
 	ret := C.TreeliteDMatrixFree(d.pointer)
 	if C.int(ret) == -1 {
@@ -100,14 +104,17 @@ func (d *DMatrix) Close() error {
 	return nil
 }
 
+// Col returns the number of columns
 func (d DMatrix) Col() int {
 	return d.col
 }
 
+// Row returns the number of rows
 func (d DMatrix) Row() int {
 	return d.row
 }
 
+// Element returns the number of internal elements
 func (d DMatrix) Element() int {
 	return d.element
 }

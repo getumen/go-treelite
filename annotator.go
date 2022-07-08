@@ -14,10 +14,13 @@ var (
 	errFreeAnnotator   = errors.New("free annotator failed")
 )
 
+// Annotator annotate branches in decision trees
+// see https://treelite.readthedocs.io/en/latest/tutorials/optimize.html#annotate-conditional-branches
 type Annotator struct {
 	pointer C.AnnotationHandle
 }
 
+// NewAnnotator creates an annotator of the given model and DMatrix
 func NewAnnotator(
 	model *Model,
 	dmatrix *DMatrix,
@@ -46,6 +49,7 @@ func NewAnnotator(
 	}, nil
 }
 
+// Save saves annotation result to the given path
 func (a Annotator) Save(path string) error {
 	ret := C.TreeliteAnnotationSave(
 		a.pointer,
@@ -57,6 +61,7 @@ func (a Annotator) Save(path string) error {
 	return nil
 }
 
+// Close frees internally allocated memory
 func (a Annotator) Close() error {
 	ret := C.TreeliteAnnotationFree(
 		a.pointer,
