@@ -1,0 +1,42 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+env:
+  LIBRARY_PATH: /usr/local/lib${LIBRARY_PATH:+:$LIBRARY_PATH}
+  LD_LIBRARY_PATH: /usr/local/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+  TREELITE_VERSION: 2.3.0
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+        
+    - name: Install prerequirements
+      run: sudo apt-get install -y make cmake g++ python3-pip
+      
+    - name: Install treelite
+      run: |
+        git clone https://github.com/dmlc/treelite.git -b $TREELITE_VERSION /tmp/
+        mkdir /tmp/treelite/build
+        pushd /tmp/treelite/build
+        cmake ..
+        make install
+        popd
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
