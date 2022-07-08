@@ -32,7 +32,7 @@ jobs:
         mkdir /tmp/treelite/build
         pushd /tmp/treelite/build
         cmake ..
-        make install
+        sudo make install
         popd
 
     - name: Build
