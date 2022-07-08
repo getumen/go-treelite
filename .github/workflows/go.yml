@@ -28,7 +28,7 @@ jobs:
       
     - name: Install treelite
       run: |
-        git clone https://github.com/dmlc/treelite.git -b $TREELITE_VERSION /tmp/
+        git clone https://github.com/dmlc/treelite.git -b $TREELITE_VERSION /tmp/treelite
         mkdir /tmp/treelite/build
         pushd /tmp/treelite/build
         cmake ..
