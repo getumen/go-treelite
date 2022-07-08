@@ -2,17 +2,35 @@ name: reviewdog
 
 on: 
   - pull_request
+
+env:
+  LIBRARY_PATH: /usr/local/lib
+  LD_LIBRARY_PATH: /usr/local/lib
+  TREELITE_VERSION: 2.3.0
+
 jobs:
   golangci-lint:
     name: runner / golangci-lint
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
-        
-      - name: golangci-lint
-        uses: reviewdog/action-golangci-lint@v2
-        with:
-          github_token: ${{ github.token }}
-          reporter: "github-pr-review"
-          filter_mode: "file"
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v3
+
+    - name: Install prerequirements
+      run: sudo apt-get install -y make cmake g++ python3-pip
+
+    - name: Install treelite
+      run: |
+        git clone https://github.com/dmlc/treelite.git -b $TREELITE_VERSION /tmp/treelite
+        mkdir /tmp/treelite/build
+        pushd /tmp/treelite/build
+        cmake ..
+        sudo make install
+        popd  
+
+    - name: golangci-lint
+      uses: reviewdog/action-golangci-lint@v2
+      with:
+        github_token: ${{ github.token }}
+        reporter: "github-pr-review"
+        filter_mode: "file"
