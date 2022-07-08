@@ -6,13 +6,19 @@ import treelite_runtime
 import xgboost as xgb
 from sklearn import datasets, model_selection
 
+seed = 42
+
 breast_cancer = datasets.load_breast_cancer()
 
 feature = pd.DataFrame(breast_cancer.data, columns=breast_cancer.feature_names)
 target = pd.Series(breast_cancer.target)
 
 train_x, test_x, train_y, test_y = model_selection.train_test_split(
-    feature, target, test_size=0.2, shuffle=True
+    feature,
+    target,
+    test_size=0.2,
+    shuffle=True,
+    random_state=seed,
 )
 
 dtrain = xgb.DMatrix(train_x, label=train_y)
@@ -22,6 +28,7 @@ booster = xgb.train(
         "max_depth": 2,
         "eta": 0.01,
         "objective": "binary:logistic",
+        "seed": seed,
     },
     dtrain,
     100,
