@@ -11,11 +11,10 @@ import (
 )
 
 var (
-	errCreatePredictor     = errors.New("create predictor failed")
-	errQueryLeafOutputType = errors.New("query leaf output type failed")
-	errQueryNumClass       = errors.New("query num class failed")
-	errFreePredictor       = errors.New("free predictor failed")
-	errPredictBatch        = errors.New("predict batch failed")
+	errCreatePredictor = errors.New("create predictor failed")
+	errQueryNumClass   = errors.New("query num class failed")
+	errFreePredictor   = errors.New("free predictor failed")
+	errPredictBatch    = errors.New("predict batch failed")
 )
 
 type Predictor struct {
