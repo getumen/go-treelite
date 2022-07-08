@@ -22,5 +22,8 @@ func TestModel_LoadXGBoostModelFromMemoryBuffer(t *testing.T) {
 	}
 	defer f.Close()
 	target, err := treelite.LoadXGBoostModelFromMemoryBuffer(f)
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer target.Close()
 }

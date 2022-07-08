@@ -13,7 +13,6 @@ import (
 
 var (
 	errCreateDMatrixHandle = errors.New("create dmatrix failed")
-	errGetDimension        = errors.New("get dimension failed")
 	errFreeDMatrix         = errors.New("free dmatrix failed")
 )
 
