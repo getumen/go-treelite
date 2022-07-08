@@ -17,12 +17,15 @@ var (
 	errPredictBatch    = errors.New("predict batch failed")
 )
 
+// Predictor is compiled prediction subroutines from shared libraries
 type Predictor struct {
 	pointer  C.PredictorHandle
 	dataType string
 	numClass int
 }
 
+// NewPredictor load prediction code into memory.
+// This function assumes that the prediction code has been already compiled into a dynamic shared library object (.so/.dll/.dylib).
 func NewPredictor(libraryPath string, NumWorkerThread int) (*Predictor, error) {
 	var handle C.PredictorHandle
 	ret := C.TreelitePredictorLoad(
@@ -47,6 +50,7 @@ func NewPredictor(libraryPath string, NumWorkerThread int) (*Predictor, error) {
 	return &Predictor{handle, dataType, numClass}, nil
 }
 
+// Close frees internally allocated memory
 func (p *Predictor) Close() error {
 	ret := C.TreelitePredictorFree(p.pointer)
 	if C.int(ret) == -1 {
@@ -72,6 +76,8 @@ func treelitePredictorQueryLeafOutputType(
 	return C.GoString(result), nil
 }
 
+// DataType returns data type of predictor
+// only float32 is supported
 func (p Predictor) DataType() string {
 	return p.dataType
 }
@@ -90,10 +96,20 @@ func treeliteQueryNumClass(pointer C.PredictorHandle) (int, error) {
 	return int(result), nil
 }
 
+// NumClass returns the number of classes of the given model
 func (p Predictor) NumClass() int {
 	return p.numClass
 }
 
+// PredictBatch make predictions on a batch of data rows (synchronously).
+// This function internally divides the workload among all worker threads.
+// the length of returned scores is #row * #class
+// if your #row is 4 and #class is 3, then the length of scores is 12
+// for rowID := 0; rowID < dMatrix.Row(); rowID++ {
+//   for classID := 0; classID < predictor.NumClass(); classID++ {
+//	   value = scores[rowID*predictor.NumClass()+classID]
+//   }
+// }
 func (p Predictor) PredictBatch(
 	dmat *DMatrix,
 	verbose bool,

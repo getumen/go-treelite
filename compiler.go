@@ -24,6 +24,7 @@ var (
 	errGenerateCode   = errors.New("generate code failed")
 )
 
+// CompilerParam is a compiler setting
 type CompilerParam struct {
 	AnnotationPath string     `json:"annotate_in,omitempty"`
 	Quantize       BooleanInC `json:"quantize,omitempty"`
@@ -34,8 +35,10 @@ type CompilerParam struct {
 	DumpArrayAsELF BooleanInC `json:"dump_array_as_elf,omitempty"`
 }
 
+// BooleanInC generates int representation in json
 type BooleanInC bool
 
+// MarshalJSON returns int representation of bool
 func (b *BooleanInC) MarshalJSON() ([]byte, error) {
 	if *b {
 		return []byte("1"), nil
@@ -43,10 +46,12 @@ func (b *BooleanInC) MarshalJSON() ([]byte, error) {
 	return []byte("0"), nil
 }
 
+// Compiler produces optimize prediction subroutine (in C) from a given decision tree ensemble.
 type Compiler struct {
 	pointer C.CompilerHandle
 }
 
+// NewCompiler creates new compiler by the given setting
 func NewCompiler(
 	name string,
 	param *CompilerParam,
@@ -69,6 +74,7 @@ func NewCompiler(
 	}, nil
 }
 
+// Close frees internally allocated memory
 func (c *Compiler) Close() error {
 	ret := C.TreeliteCompilerFree(
 		c.pointer,
@@ -79,6 +85,7 @@ func (c *Compiler) Close() error {
 	return nil
 }
 
+// GenerateCode generate C source code from the given model
 func (c *Compiler) GenerateCode(model *Model, destPath string) error {
 
 	ret := C.TreeliteCompilerGenerateCodeV2(
@@ -92,6 +99,8 @@ func (c *Compiler) GenerateCode(model *Model, destPath string) error {
 	return nil
 }
 
+// ExportSharedLib exports shared object of optimized model
+// compileOptions is compiler option  e.g. -g
 func (c *Compiler) ExportSharedLib(
 	model *Model,
 	destPath string,
