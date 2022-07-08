@@ -8,6 +8,7 @@ on:
     
 env:
   LIBRARY_PATH: /usr/local/lib
+  LD_LIBRARY_PATH: /usr/local/lib
   TREELITE_VERSION: 2.3.0
 
 jobs:
