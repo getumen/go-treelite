@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
     
 env:
-  LIBRARY_PATH: /usr/local/lib${LIBRARY_PATH:+:$LIBRARY_PATH}
-  LD_LIBRARY_PATH: /usr/local/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+  LIBRARY_PATH: /usr/local${LIBRARY_PATH:+:$LIBRARY_PATH}
+  LD_LIBRARY_PATH: /usr/local${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
   TREELITE_VERSION: 2.3.0
 
 jobs:
