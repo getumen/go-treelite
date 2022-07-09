@@ -8,7 +8,7 @@ import (
 )
 
 func TestModel_LoadXGBoostModel(t *testing.T) {
-	target, err := treelite.LoadXGBoostModel("test_data/xgboost.model")
+	target, err := treelite.LoadXGBoostModel("testdata/xgboost.model")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -16,7 +16,7 @@ func TestModel_LoadXGBoostModel(t *testing.T) {
 }
 
 func TestModel_LoadXGBoostModelFromMemoryBuffer(t *testing.T) {
-	f, err := os.Open("test_data/xgboost.model")
+	f, err := os.Open("testdata/xgboost.model")
 	if err != nil {
 		t.Fatal(err)
 	}

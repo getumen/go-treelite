@@ -13,7 +13,7 @@ func TestCompiler_GenerateCode(t *testing.T) {
 	target, err := treelite.NewCompiler(
 		"ast_native",
 		&treelite.CompilerParam{
-			AnnotationPath: "test_data/annotation.json",
+			AnnotationPath: "testdata/annotation.json",
 			Quantize:       true,
 			ParallelComp:   true,
 			Verbose:        true,
@@ -24,7 +24,7 @@ func TestCompiler_GenerateCode(t *testing.T) {
 	}
 	defer target.Close()
 
-	model, err := treelite.LoadXGBoostModel("test_data/xgboost.model")
+	model, err := treelite.LoadXGBoostModel("testdata/xgboost.model")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func TestCompiler_GenerateCode(t *testing.T) {
 
 	err = target.GenerateCode(
 		model,
-		"test_data/compiled_model",
+		"testdata/compiled_model",
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -43,7 +43,7 @@ func TestCompiler_ExportSharedLib(t *testing.T) {
 	target, err := treelite.NewCompiler(
 		"ast_native",
 		&treelite.CompilerParam{
-			AnnotationPath: "test_data/annotation.json",
+			AnnotationPath: "testdata/annotation.json",
 			Quantize:       true,
 			ParallelComp:   true,
 			Verbose:        true,
@@ -54,7 +54,7 @@ func TestCompiler_ExportSharedLib(t *testing.T) {
 	}
 	defer target.Close()
 
-	model, err := treelite.LoadXGBoostModel("test_data/xgboost.model")
+	model, err := treelite.LoadXGBoostModel("testdata/xgboost.model")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,7 +62,7 @@ func TestCompiler_ExportSharedLib(t *testing.T) {
 
 	err = target.ExportSharedLib(
 		model,
-		"test_data/go_compiled_model",
+		"testdata/go_compiled_model",
 		"gcc",
 		nil,
 	)
@@ -70,7 +70,7 @@ func TestCompiler_ExportSharedLib(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	predictor, err := treelite.NewPredictor("./test_data/go_compiled_model.so", runtime.NumCPU())
+	predictor, err := treelite.NewPredictor("./testdata/go_compiled_model.so", runtime.NumCPU())
 	if err != nil {
 		t.Fatal(err)
 	}

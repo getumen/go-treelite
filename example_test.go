@@ -22,7 +22,7 @@ func Example() {
 	}
 	defer dMatrix.Close()
 
-	model, err := treelite.LoadXGBoostModel("test_data/xgboost.model")
+	model, err := treelite.LoadXGBoostModel("testdata/xgboost.model")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func Example() {
 	}
 	defer annotator.Close()
 
-	err = annotator.Save("test_data/go-example-annotation.json")
+	err = annotator.Save("testdata/go-example-annotation.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,7 +42,7 @@ func Example() {
 	compiler, err := treelite.NewCompiler(
 		"ast_native",
 		&treelite.CompilerParam{
-			AnnotationPath: "test_data/go-example-annotation.json",
+			AnnotationPath: "testdata/go-example-annotation.json",
 			Quantize:       true,
 			ParallelComp:   true,
 			Verbose:        true,
@@ -55,7 +55,7 @@ func Example() {
 
 	err = compiler.ExportSharedLib(
 		model,
-		"test_data/go_example_compiled_model",
+		"testdata/go_example_compiled_model",
 		"gcc",
 		nil,
 	)
@@ -64,7 +64,7 @@ func Example() {
 	}
 
 	predictor, err := treelite.NewPredictor(
-		"test_data/go_example_compiled_model.so",
+		"testdata/go_example_compiled_model.so",
 		runtime.NumCPU(),
 	)
 	if err != nil {
@@ -83,7 +83,7 @@ func loadData() ([]float32, int, int) {
 	nCol := 30
 	var nRow int
 	feature := make([]float32, 0)
-	featureFile, err := os.Open("test_data/feature.csv")
+	featureFile, err := os.Open("testdata/feature.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
