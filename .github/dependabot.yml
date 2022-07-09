@@ -10,6 +10,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/test_data" # Location of package manifests
+    directory: "/testdata" # Location of package manifests
     schedule:
       interval: "daily"

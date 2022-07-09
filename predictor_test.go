@@ -15,7 +15,7 @@ import (
 
 func TestPredictor_Load(t *testing.T) {
 	// if your test failed, check os and arch oh your PC.
-	target, err := treelite.NewPredictor("test_data/compiled_model.so", 1)
+	target, err := treelite.NewPredictor("testdata/compiled_model.so", 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +24,7 @@ func TestPredictor_Load(t *testing.T) {
 
 func TestPredictor_DataType(t *testing.T) {
 	// if your test failed, check os and arch oh your PC.
-	target, err := treelite.NewPredictor("test_data/compiled_model.so", runtime.NumCPU())
+	target, err := treelite.NewPredictor("testdata/compiled_model.so", runtime.NumCPU())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func TestPredictor_DataType(t *testing.T) {
 
 func TestPredictor_NumClass(t *testing.T) {
 	// if your test failed, check os and arch oh your PC.
-	target, err := treelite.NewPredictor("test_data/compiled_model.so", 1)
+	target, err := treelite.NewPredictor("testdata/compiled_model.so", 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,7 +49,7 @@ func TestPredictor_PredictBatch(t *testing.T) {
 	var nRow int
 	feature := make([]float32, 0)
 
-	featureFile, err := os.Open("test_data/feature.csv")
+	featureFile, err := os.Open("testdata/feature.csv")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func TestPredictor_PredictBatch(t *testing.T) {
 
 	expectedScores := make([]float32, 0)
 
-	scoreFile, err := os.Open("test_data/score.csv")
+	scoreFile, err := os.Open("testdata/score.csv")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,7 +92,7 @@ func TestPredictor_PredictBatch(t *testing.T) {
 	}
 
 	// if your test failed, check os and arch oh your PC.
-	model, err := treelite.NewPredictor("test_data/compiled_model.so", 1)
+	model, err := treelite.NewPredictor("testdata/compiled_model.so", 1)
 	if err != nil {
 		t.Fatal(err)
 	}

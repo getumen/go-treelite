@@ -14,7 +14,7 @@ import (
 )
 
 func TestAnnotator(t *testing.T) {
-	model, err := treelite.LoadXGBoostModel("test_data/xgboost.model")
+	model, err := treelite.LoadXGBoostModel("testdata/xgboost.model")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +24,7 @@ func TestAnnotator(t *testing.T) {
 	var nRow int
 	feature := make([]float32, 0)
 
-	featureFile, err := os.Open("test_data/feature.csv")
+	featureFile, err := os.Open("testdata/feature.csv")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -53,12 +53,12 @@ func TestAnnotator(t *testing.T) {
 	}
 	defer target.Close()
 
-	err = target.Save("test_data/go-annotation.json")
+	err = target.Save("testdata/go-annotation.json")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expectedFile, err := os.Open("test_data/go-annotation.json")
+	expectedFile, err := os.Open("testdata/go-annotation.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func TestAnnotator(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	actualFile, err := os.Open("test_data/annotation.json")
+	actualFile, err := os.Open("testdata/annotation.json")
 	if err != nil {
 		t.Fatal(err)
 	}
