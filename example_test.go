@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"testing"
 
 	"github.com/getumen/go-treelite"
 )
@@ -101,4 +102,8 @@ func loadData() ([]float32, int, int) {
 	}
 
 	return feature, nRow, nCol
+}
+
+func TestEndToEnd_Example(t *testing.T) {
+	Example()
 }
