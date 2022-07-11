@@ -28,12 +28,27 @@ var (
 
 // CompilerParam is a compiler setting
 type CompilerParam struct {
-	AnnotationPath string     `json:"annotate_in,omitempty"`
-	Quantize       BooleanInC `json:"quantize,omitempty"`
-	ParallelComp   BooleanInC `json:"parallel_comp,omitempty"`
-	Verbose        BooleanInC `json:"verbose,omitempty"`
-	NativeLibName  string     `json:"native_lib_name,omitempty"`
-	CodeFoldingReq float64    `json:"code_folding_req,omitempty"`
+	// name of model annotation file.
+	// Use the class treelite.Annotator to generate this file.
+	AnnotationPath string `json:"annotate_in,omitempty"`
+	// whether to quantize threshold points
+	Quantize BooleanInC `json:"quantize,omitempty"`
+	// option to enable parallel compilation;
+	// if set to nonzero, the trees will be evely distributed into [parallel_comp] files.
+	// Set this option to improve compilation time and reduce memory consumption during compilation.
+	ParallelComp int `json:"parallel_comp,omitempty"`
+	// produce extra messages
+	Verbose BooleanInC `json:"verbose,omitempty"`
+	// native lib name (without extension)
+	NativeLibName string `json:"native_lib_name,omitempty"`
+	// parameter for folding rarely visited subtrees (no if/else blocks);
+	// all nodes whose data counts are lower than that of the root node of the decision tree by [code_folding_req] will be folded.
+	// To diable folding, set to +inf. If hessian sums are available, they will be used as proxies of data counts.
+	CodeFoldingReq float64 `json:"code_folding_req,omitempty"`
+	// Only applicable when compiler is set to failsafe.
+	// If set to a positive value, the fail-safe compiler will not emit large constant arrays to the C code.
+	// Instead, the arrays will be emitted as an ELF binary (Linux only).
+	// For large arrays, it is much faster to directly dump ELF binaries than to pass them to a C compiler.
 	DumpArrayAsELF BooleanInC `json:"dump_array_as_elf,omitempty"`
 }
 

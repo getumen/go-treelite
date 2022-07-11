@@ -15,7 +15,7 @@ func TestCompiler_GenerateCode(t *testing.T) {
 		&treelite.CompilerParam{
 			AnnotationPath: "testdata/annotation.json",
 			Quantize:       true,
-			ParallelComp:   true,
+			ParallelComp:   runtime.NumCPU(),
 			Verbose:        true,
 		},
 	)
@@ -45,7 +45,7 @@ func TestCompiler_ExportSharedLib(t *testing.T) {
 		&treelite.CompilerParam{
 			AnnotationPath: "testdata/annotation.json",
 			Quantize:       true,
-			ParallelComp:   true,
+			ParallelComp:   runtime.NumCPU(),
 			Verbose:        true,
 		},
 	)
@@ -82,13 +82,14 @@ func TestCompilerParam(t *testing.T) {
 		"annotate_in": "path",
 		"quantize": 1,
 		"verbose": 1,
-		"native_lib_name": "model.so"
+		"native_lib_name": "model.so",
+		"parallel_comp": 4
 	}`
 
 	target := &treelite.CompilerParam{
 		AnnotationPath: "path",
 		Quantize:       true,
-		ParallelComp:   false,
+		ParallelComp:   4,
 		Verbose:        true,
 		NativeLibName:  "model.so",
 	}
