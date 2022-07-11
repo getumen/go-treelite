@@ -45,7 +45,7 @@ func Example() {
 		&treelite.CompilerParam{
 			AnnotationPath: "testdata/go-example-annotation.json",
 			Quantize:       true,
-			ParallelComp:   true,
+			ParallelComp:   runtime.NumCPU(),
 			Verbose:        true,
 		},
 	)
