@@ -9,6 +9,7 @@ import "C"
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -22,6 +23,7 @@ var (
 	errCreateCompiler = errors.New("create compiler failed")
 	errFreeCompiler   = errors.New("free compiler failed")
 	errGenerateCode   = errors.New("generate code failed")
+	errCompile        = errors.New("compile failed")
 )
 
 // CompilerParam is a compiler setting
@@ -133,23 +135,38 @@ func (c *Compiler) ExportSharedLib(
 
 	compileOptions = append(compileOptions, "-lm")
 
-	outputObjectPath := path.Join(dir, "output.o")
+	var recipe Recipe
 
-	objOptions := []string{
-		"-c",
-		"-Ofast",
-		"-o",
-		outputObjectPath,
-		path.Join(dir, "main.c"),
-		"-fPIC",
-		"-std=c99",
+	recipeJson, err := ioutil.ReadFile(path.Join(dir, "recipe.json"))
+	if err != nil {
+		return errCompile
 	}
 
-	objOptions = append(objOptions, compileOptions...)
+	if err := json.Unmarshal(recipeJson, &recipe); err != nil {
+		return errCompile
+	}
 
-	err = exec.Command("gcc", objOptions...).Run()
-	if err != nil {
-		return err
+	objectNameList := make([]string, 0)
+	for _, source := range recipe.Sources {
+
+		objectName := path.Join(dir, fmt.Sprintf("%s.o", source.Name))
+
+		objOptions := []string{
+			"-c",
+			"-O3",
+			"-o",
+			objectName,
+			path.Join(dir, fmt.Sprintf("%s.c", source.Name)),
+			"-fPIC",
+			"-std=c99",
+		}
+		objOptions = append(objOptions, compileOptions...)
+
+		err = exec.Command("gcc", objOptions...).Run()
+		if err != nil {
+			return err
+		}
+		objectNameList = append(objectNameList, objectName)
 	}
 
 	var ext string
@@ -165,12 +182,12 @@ func (c *Compiler) ExportSharedLib(
 
 	libOptions := []string{
 		"-shared",
-		"-Ofast",
+		"-std=c99",
+		"-O3",
 		"-o",
 		tempFile,
-		outputObjectPath,
-		"-std=c99",
 	}
+	libOptions = append(libOptions, objectNameList...)
 	libOptions = append(libOptions, compileOptions...)
 
 	err = exec.Command("gcc", libOptions...).Run()
@@ -183,6 +200,14 @@ func (c *Compiler) ExportSharedLib(
 		return err
 	}
 	return nil
+}
+
+type Recipe struct {
+	Target  string `json:"target"`
+	Sources []struct {
+		Name   string `json:"name"`
+		Length int    `json:"length"`
+	} `json:"sources"`
 }
 
 func fileCopy(dest, src string) error {
