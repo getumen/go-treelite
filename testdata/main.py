@@ -25,7 +25,7 @@ dtrain = xgb.DMatrix(train_x, label=train_y)
 
 booster = xgb.train(
     {
-        "max_depth": 2,
+        "max_depth": 6,
         "eta": 0.01,
         "objective": "binary:logistic",
         "seed": seed,
