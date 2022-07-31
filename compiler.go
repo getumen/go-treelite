@@ -17,6 +17,7 @@ import (
 	"os/exec"
 	"path"
 	"runtime"
+	"sync"
 )
 
 var (
@@ -161,26 +162,42 @@ func (c *Compiler) ExportSharedLib(
 		return errCompile
 	}
 
-	objectNameList := make([]string, 0)
+	objectNameChan := make(chan string)
+	wg := sync.WaitGroup{}
+
 	for _, source := range recipe.Sources {
+		wg.Add(1)
 
-		objectName := path.Join(dir, fmt.Sprintf("%s.o", source.Name))
+		go func(sourceName string) {
+			defer wg.Done()
+			objectName := path.Join(dir, fmt.Sprintf("%s.o", sourceName))
 
-		objOptions := []string{
-			"-c",
-			"-O3",
-			"-o",
-			objectName,
-			path.Join(dir, fmt.Sprintf("%s.c", source.Name)),
-			"-fPIC",
-			"-std=c99",
-		}
-		objOptions = append(objOptions, compileOptions...)
+			objOptions := []string{
+				"-Ofast",
+				"-o",
+				objectName,
+				"-c",
+				path.Join(dir, fmt.Sprintf("%s.c", sourceName)),
+				"-fPIC",
+				"-std=c99",
+			}
+			objOptions = append(objOptions, compileOptions...)
 
-		err = exec.Command("gcc", objOptions...).Run()
-		if err != nil {
-			return err
-		}
+			_, err := exec.Command("gcc", objOptions...).Output()
+			if err != nil {
+				log.Fatalf("fail to compile %s", objectName)
+			}
+			objectNameChan <- objectName
+		}(source.Name)
+	}
+
+	go func() {
+		wg.Wait()
+		close(objectNameChan)
+	}()
+
+	objectNameList := make([]string, 0)
+	for objectName := range objectNameChan {
 		objectNameList = append(objectNameList, objectName)
 	}
 
