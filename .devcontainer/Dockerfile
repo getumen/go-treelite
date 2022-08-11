@@ -25,7 +25,7 @@ RUN cd /tmp/ && git clone https://github.com/dmlc/treelite.git -b 2.3.0 \
     && cd treelite \
     && mkdir build && cd build \
     && cmake .. \
-    && make install \
+    && make install -j $(nproc) \
     && rm -r /tmp/treelite
 
 # [Optional] Uncomment this line to install global node packages.
