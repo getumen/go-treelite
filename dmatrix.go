@@ -24,8 +24,8 @@ type DMatrix struct {
 	element int
 }
 
-// CreaetFromMat creates a dense DMatrix from the given data
-func CreaetFromMat(
+// CreateFromMat creates a dense DMatrix from the given data
+func CreateFromMat(
 	data []float32,
 	nrow, ncol int,
 	missing float32,
