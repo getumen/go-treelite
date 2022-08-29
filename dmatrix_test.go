@@ -14,7 +14,7 @@ func TestDMatrix_CreaetFromMat(t *testing.T) {
 	ncol := 3
 	nonZero := 6
 
-	target, err := treelite.CreaetFromMat(data, nrow, ncol, float32(math.NaN()))
+	target, err := treelite.CreateFromMat(data, nrow, ncol, float32(math.NaN()))
 	if err != nil {
 		t.Fatal(err)
 	}

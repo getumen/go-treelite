@@ -41,7 +41,7 @@ func TestAnnotator(t *testing.T) {
 		}
 	}
 
-	dMatrix, err := treelite.CreaetFromMat(feature, nRow, nCol, float32(math.NaN()))
+	dMatrix, err := treelite.CreateFromMat(feature, nRow, nCol, float32(math.NaN()))
 	if err != nil {
 		t.Fatal(err)
 	}
