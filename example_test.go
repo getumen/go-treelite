@@ -17,7 +17,7 @@ import (
 func Example() {
 	data, nRow, nCol := loadData()
 
-	dMatrix, err := treelite.CreaetFromMat(data, nRow, nCol, float32(math.NaN()))
+	dMatrix, err := treelite.CreateFromMat(data, nRow, nCol, float32(math.NaN()))
 	if err != nil {
 		log.Fatal(err)
 	}
