@@ -1,10 +1,19 @@
 import os
+import sys
 
 import pandas as pd
 import treelite
 import treelite_runtime
 import xgboost as xgb
 from sklearn import datasets, model_selection
+
+if sys.platform == "win32" or sys.platform == "cygwin":
+    shared_library_extension = "dll"
+elif sys.platform == "darwin":
+    shared_library_extension = "dylib"
+else:
+    shared_library_extension = "so"
+
 
 seed = 42
 
@@ -49,7 +58,7 @@ annotator.save(path="annotation.json")
 
 model.export_lib(
     toolchain="gcc",
-    libpath="compiled_model.so",
+    libpath=f"compiled_model.{shared_library_extension}",
     verbose=True,
     params={
         "parallel_comp": os.cpu_count(),
@@ -58,7 +67,7 @@ model.export_lib(
 )
 
 predictor = treelite_runtime.Predictor(
-    "compiled_model.so",
+    f"compiled_model.{shared_library_extension}",
     nthread=os.cpu_count(),
     verbose=True,
 )
