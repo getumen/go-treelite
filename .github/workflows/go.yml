@@ -40,4 +40,9 @@ jobs:
       run: go build -race -v ./...
 
     - name: Test
-      run: go test -race -v ./...
+      run: |
+        pushd testdata
+        pip3 install -r requirements.txt
+        python3 main.py
+        popd
+        go test -race -v ./...
