@@ -2,6 +2,7 @@ package treelite_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"runtime"
 	"testing"
 
@@ -70,7 +71,9 @@ func TestCompiler_ExportSharedLib(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	predictor, err := treelite.NewPredictor("./testdata/go_compiled_model.so", runtime.NumCPU())
+	predictor, err := treelite.NewPredictor(
+		fmt.Sprintf("./testdata/go_compiled_model.%s", treelite.GetSharedLibExtension()),
+		runtime.NumCPU())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -78,20 +81,20 @@ func TestCompiler_ExportSharedLib(t *testing.T) {
 }
 
 func TestCompilerParam(t *testing.T) {
-	expected := `{
+	expected := fmt.Sprintf(`{
 		"annotate_in": "path",
 		"quantize": 1,
 		"verbose": 1,
-		"native_lib_name": "model.so",
+		"native_lib_name": "model.%s",
 		"parallel_comp": 4
-	}`
+	}`, treelite.GetSharedLibExtension())
 
 	target := &treelite.CompilerParam{
 		AnnotationPath: "path",
 		Quantize:       true,
 		ParallelComp:   4,
 		Verbose:        true,
-		NativeLibName:  "model.so",
+		NativeLibName:  fmt.Sprintf("model.%s", treelite.GetSharedLibExtension()),
 	}
 
 	result, err := json.Marshal(target)

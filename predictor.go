@@ -105,11 +105,12 @@ func (p Predictor) NumClass() int {
 // This function internally divides the workload among all worker threads.
 // the length of returned scores is #row * #class
 // if your #row is 4 and #class is 3, then the length of scores is 12
-// for rowID := 0; rowID < dMatrix.Row(); rowID++ {
-//   for classID := 0; classID < predictor.NumClass(); classID++ {
-//	   value = scores[rowID*predictor.NumClass()+classID]
-//   }
-// }
+//
+//	for rowID := 0; rowID < dMatrix.Row(); rowID++ {
+//	  for classID := 0; classID < predictor.NumClass(); classID++ {
+//		   value = scores[rowID*predictor.NumClass()+classID]
+//	  }
+//	}
 func (p Predictor) PredictBatch(
 	dmat *DMatrix,
 	verbose bool,

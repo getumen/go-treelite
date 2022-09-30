@@ -120,6 +120,13 @@ float predict(union Entry* data, int pred_margin) {
   unsigned int tmp;
   int nid, cond, fid;  /* used for folded subtrees */
   sum += predict_margin_unit0(data);
+  sum += predict_margin_unit1(data);
+  sum += predict_margin_unit2(data);
+  sum += predict_margin_unit3(data);
+  sum += predict_margin_unit4(data);
+  sum += predict_margin_unit5(data);
+  sum += predict_margin_unit6(data);
+  sum += predict_margin_unit7(data);
 
   sum = sum + (float)(-0);
   if (!pred_margin) {

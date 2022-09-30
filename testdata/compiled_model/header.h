@@ -42,3 +42,10 @@ const char* get_leaf_output_type(void);
 
 float predict(union Entry* data, int pred_margin);
 float predict_margin_unit0(union Entry* data);
+float predict_margin_unit1(union Entry* data);
+float predict_margin_unit2(union Entry* data);
+float predict_margin_unit3(union Entry* data);
+float predict_margin_unit4(union Entry* data);
+float predict_margin_unit5(union Entry* data);
+float predict_margin_unit6(union Entry* data);
+float predict_margin_unit7(union Entry* data);

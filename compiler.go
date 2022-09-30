@@ -201,16 +201,9 @@ func (c *Compiler) ExportSharedLib(
 		objectNameList = append(objectNameList, objectName)
 	}
 
-	var ext string
-	if runtime.GOOS == "darwin" {
-		ext = ".dylib"
-	} else if runtime.GOOS == "win32" || runtime.GOOS == "cygwin" {
-		ext = ".dll"
-	} else {
-		ext = ".so"
-	}
+	ext := GetSharedLibExtension()
 
-	tempFile := path.Join(dir, "output"+ext)
+	tempFile := path.Join(dir, "output."+ext)
 
 	libOptions := []string{
 		"-shared",
@@ -227,11 +220,21 @@ func (c *Compiler) ExportSharedLib(
 		return err
 	}
 
-	err = fileCopy(destPath+ext, tempFile)
+	err = fileCopy(destPath+"."+ext, tempFile)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func GetSharedLibExtension() string {
+	if runtime.GOOS == "darwin" {
+		return "dylib"
+	} else if runtime.GOOS == "win32" || runtime.GOOS == "cygwin" {
+		return "dll"
+	} else {
+		return "so"
+	}
 }
 
 type Recipe struct {

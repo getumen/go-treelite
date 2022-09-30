@@ -65,7 +65,7 @@ func Example() {
 	}
 
 	predictor, err := treelite.NewPredictor(
-		"testdata/go_example_compiled_model.so",
+		fmt.Sprintf("testdata/go_example_compiled_model.%s", treelite.GetSharedLibExtension()),
 		runtime.NumCPU(),
 	)
 	if err != nil {
