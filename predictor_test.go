@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/getumen/go-treelite"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPredictor_Load(t *testing.T) {
@@ -31,7 +31,7 @@ func TestPredictor_DataType(t *testing.T) {
 	}
 	defer target.Close()
 
-	assert.Equal(t, "float32", target.DataType())
+	require.Equal(t, "float32", target.DataType())
 }
 
 func TestPredictor_NumClass(t *testing.T) {
@@ -42,7 +42,73 @@ func TestPredictor_NumClass(t *testing.T) {
 	}
 	defer target.Close()
 
-	assert.Equal(t, 1, target.NumClass())
+	require.Equal(t, 1, target.NumClass())
+}
+
+func TestPredictor_NumFeature(t *testing.T) {
+	// if your test failed, check os and arch oh your PC.
+	target, err := treelite.NewPredictor(fmt.Sprintf("testdata/compiled_model.%s", treelite.GetSharedLibExtension()), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer target.Close()
+
+	require.Equal(t, 30, target.NumFeature())
+}
+
+func TestPredictor_PredTransform(t *testing.T) {
+	// if your test failed, check os and arch oh your PC.
+	target, err := treelite.NewPredictor(fmt.Sprintf("testdata/compiled_model.%s", treelite.GetSharedLibExtension()), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer target.Close()
+
+	require.Equal(t, "sigmoid", target.PredTransform())
+}
+
+func TestPredictor_SigmoidAlpha(t *testing.T) {
+	// if your test failed, check os and arch oh your PC.
+	target, err := treelite.NewPredictor(fmt.Sprintf("testdata/compiled_model.%s", treelite.GetSharedLibExtension()), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer target.Close()
+
+	require.Equal(t, float32(1), target.SigmoidAlpha())
+}
+
+func TestPredictor_RatioC(t *testing.T) {
+	// if your test failed, check os and arch oh your PC.
+	target, err := treelite.NewPredictor(fmt.Sprintf("testdata/compiled_model.%s", treelite.GetSharedLibExtension()), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer target.Close()
+
+	require.Equal(t, float32(1), target.RatioC())
+}
+
+func TestPredictor_GlobalBias(t *testing.T) {
+	// if your test failed, check os and arch oh your PC.
+	target, err := treelite.NewPredictor(fmt.Sprintf("testdata/compiled_model.%s", treelite.GetSharedLibExtension()), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer target.Close()
+
+	require.Equal(t, float32(0), target.GlobalBias())
+}
+
+func TestPredictor_ThresholdType(t *testing.T) {
+	// if your test failed, check os and arch oh your PC.
+	target, err := treelite.NewPredictor(fmt.Sprintf("testdata/compiled_model.%s", treelite.GetSharedLibExtension()), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer target.Close()
+
+	require.Equal(t, "float32", target.ThresholdType())
 }
 
 func TestPredictor_PredictBatch(t *testing.T) {
@@ -103,6 +169,6 @@ func TestPredictor_PredictBatch(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.Equal(t, len(expectedScores), len(actualScore))
-	assert.InDeltaSlice(t, expectedScores, actualScore, 1e-7)
+	require.Equal(t, len(expectedScores), len(actualScore))
+	require.InDeltaSlice(t, expectedScores, actualScore, 1e-7)
 }
