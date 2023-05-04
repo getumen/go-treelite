@@ -6,7 +6,7 @@ on:
 env:
   LIBRARY_PATH: /usr/local/lib
   LD_LIBRARY_PATH: /usr/local/lib
-  TREELITE_VERSION: 3.0.0
+  TREELITE_VERSION: 3.4.0
 
 jobs:
   golangci-lint:

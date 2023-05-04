@@ -21,7 +21,7 @@ ENV PATH=$PATH:/usr/local/go/bin
 ENV LIBRARY_PATH=/usr/local/lib${LIBRARY_PATH:+:$LIBRARY_PATH}
 ENV LD_LIBRARY_PATH=/usr/local/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
-RUN cd /tmp/ && git clone https://github.com/dmlc/treelite.git -b 3.0.0 \
+RUN cd /tmp/ && git clone https://github.com/dmlc/treelite.git -b 3.4.0 \
     && cd treelite \
     && mkdir build && cd build \
     && cmake .. \

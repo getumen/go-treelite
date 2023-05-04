@@ -13,7 +13,7 @@
   - [Usage](#usage)
   - [Documentation](#documentation)
 
-This binding currently works for treelite 3.0.0.
+This binding currently works for treelite 3.4.0.
 
 ## Prerequirements
 
@@ -32,7 +32,7 @@ the following package is installed.
 #### 2. install treelite
 
 ```bash
-git clone https://github.com/dmlc/treelite.git -b 3.0.0
+git clone https://github.com/dmlc/treelite.git -b 3.4.0
 cd treelite \
 mkdir build && cd build \
 cmake .. \
