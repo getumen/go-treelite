@@ -1,4 +1,4 @@
-xgboost==1.7.5
+xgboost==1.7.6
 scikit-learn==1.2.2
 treelite==3.4.0
 treelite-runtime==3.4.0
