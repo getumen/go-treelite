@@ -1,5 +1,5 @@
 xgboost==1.7.6
-scikit-learn==1.4.2
+scikit-learn==1.5.0
 treelite==3.9.1
 treelite-runtime==3.9.1
 pandas==2.2.2
